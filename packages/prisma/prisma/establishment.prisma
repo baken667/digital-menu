@@ -1,0 +1,42 @@
+model Establishment {
+  id   String  @id @default(cuid())
+  name String
+  slug String  @unique
+  logo String?
+
+  // address
+  address String?
+
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  ownerId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contacts EstablishmentContacts[]
+
+  @@index([slug])
+  @@index([ownerId])
+}
+
+enum EstablishmentContactType {
+  email
+  phone
+  website
+  instagram
+  tiktok
+  whatsapp
+  doubleGis
+}
+
+model EstablishmentContacts {
+  id String @id @default(cuid())
+
+  type  EstablishmentContactType @default(phone)
+  value String
+
+  establishmentId String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  @@index([establishmentId])
+}

@@ -1,9 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { trpc } from "@/trpc/provider";
 
 export default function DashboardClient() {
-  const { data: session } = useSession();
+  const { data } = trpc.establishment.get.useQuery("cm5y5f4v10000dkk31ugik7ab");
 
-  return <div>{JSON.stringify(session, null, 2)}</div>;
+  return <div>{JSON.stringify(data, null, 2)}</div>;
 }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { SessionProvider } from "next-auth/react";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import Providers from "./providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={`${inter.variable} antialiased`}>
-        <SessionProvider>{children}</SessionProvider>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>

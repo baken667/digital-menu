@@ -2,6 +2,7 @@ import LogoutButton from "@/components/logout";
 import DashboardClient from "./pageClient";
 
 export default function Dashboard() {
+
   return (
     <div>
       <div>
