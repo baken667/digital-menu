@@ -1,0 +1,24 @@
+{
+  "extends": "@dmu/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": [
+      "ESNext"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "/"
+      ]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "build",
+  ]
+}

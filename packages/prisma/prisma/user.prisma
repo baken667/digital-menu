@@ -1,0 +1,19 @@
+enum UserRoles {
+  admin
+  owner
+}
+
+model User {
+  id    String    @id @default(cuid())
+  name  String?
+  email String    @unique
+  role  UserRoles @default(owner)
+
+  // password
+  passwordHash         String?
+  invalidLoginAttempts Int       @default(0)
+  lockedAt             DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

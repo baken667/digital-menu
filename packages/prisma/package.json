@@ -1,0 +1,36 @@
+{
+  "name": "@dmu/prisma",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "generate": "npx prisma generate --schema=./prisma",
+    "push": "npx prisma db push --schema=./prisma",
+    "migrate:dev": "npx prisma migrate dev --schema=./prisma",
+    "studio": "npx prisma studio --schema=./prisma --browser none",
+    "prebuild": "pnpm run generate",
+    "predev": "pnpm run generate",
+    "seed": "npx prisma db seed --schema=./prisma"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./client": "./client.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.6",
+    "prisma": "^6.2.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@dmu/features": "workspace:*",
+    "@dmu/tsconfig": "workspace:*",
+    "@prisma/client": "^6.2.1"
+  },
+  "prisma": {
+    "seed": "ts-node --transpile-only ./seed.ts"
+  }
+}
