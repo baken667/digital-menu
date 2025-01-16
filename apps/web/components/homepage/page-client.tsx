@@ -1,13 +1,14 @@
 "use client";
-import { useSession } from "next-auth/react";
-import React from "react";
+
+import Container from "../layouts/public/container";
 
 function HomePageClient() {
-  const session = useSession();
   return (
-    <div>
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-    </div>
+    <Container>
+      <div>
+        <h1>Homepage</h1>
+      </div>
+    </Container>
   );
 }
 

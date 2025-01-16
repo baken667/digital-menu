@@ -14,8 +14,10 @@ model User {
   invalidLoginAttempts Int       @default(0)
   lockedAt             DateTime?
 
+  ownedEstablishments Establishment[] @relation(name: "establishment_owner")
+
+  defaultEstablishmentId String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  Establishment Establishment[]
 }

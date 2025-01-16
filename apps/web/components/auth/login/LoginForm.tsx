@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 
 function LoginForm() {
   const { action, form, handleSubmitWithAction } = useHookFormAction(
@@ -33,8 +34,10 @@ function LoginForm() {
       actionProps: {
         onSuccess: async ({ data }) => {
           if (data?.success) {
+            // const user = data.user;
+            // ToDo: Make redirectUrl dynamically from server side
             signIn(undefined, {
-              redirectTo: "/",
+              redirectTo: DEFAULT_LOGIN_REDIRECT,
             });
           } else {
             toast.error(data?.message);

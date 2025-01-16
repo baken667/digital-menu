@@ -9,5 +9,11 @@ export const messages = {
   },
   auth: {
     successfulLogin: "Вы вошли в систему",
+  },
+  common: {
+    auth: {
+      login: "Войти",
+    },
+    dashboard: "Панель управления"
   }
 } as const;

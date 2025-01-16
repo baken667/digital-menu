@@ -41,6 +41,7 @@ export const loginAction = actionClient
       return {
         success: true,
         message: messages.auth.successfulLogin,
+        user: user,
       };
     } catch (error) {
       if (error instanceof AuthError) {
