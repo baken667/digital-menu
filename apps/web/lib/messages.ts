@@ -13,7 +13,9 @@ export const messages = {
   common: {
     auth: {
       login: "Войти",
+      logout: "Выйти",
     },
-    dashboard: "Панель управления"
+    dashboard: "Панель управления",
+    profile: "Профиль",
   }
 } as const;

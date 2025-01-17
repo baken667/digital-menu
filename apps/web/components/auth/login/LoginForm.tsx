@@ -2,8 +2,11 @@
 
 import React from "react";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
+import { signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
+
 import { loginAction } from "@/actions/auth/login";
 import { LoginSchema } from "@/schemas/auth";
 import {
@@ -16,8 +19,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 
 function LoginForm() {
@@ -34,8 +35,6 @@ function LoginForm() {
       actionProps: {
         onSuccess: async ({ data }) => {
           if (data?.success) {
-            // const user = data.user;
-            // ToDo: Make redirectUrl dynamically from server side
             signIn(undefined, {
               redirectTo: DEFAULT_LOGIN_REDIRECT,
             });

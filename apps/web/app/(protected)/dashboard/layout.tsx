@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import AdminLayout from "@/components/layouts/admin/admin-layout";
+import DashboardLayout from "@/components/layouts/dashboard/dashboard-layout";
 
-export default async function DashboardLayout({
+export default async function DashboardLayoutRoot({
   children,
 }: {
   children: React.ReactNode;
@@ -16,14 +16,5 @@ export default async function DashboardLayout({
     );
   }
 
-  if (session.user.role !== "owner") {
-    return <AdminLayout>{children}</AdminLayout>;
-  }
-
-  return (
-    <div>
-      <h3>Dashboard Layout</h3>
-      {children}
-    </div>
-  );
+  return <DashboardLayout>{children}</DashboardLayout>;
 }
