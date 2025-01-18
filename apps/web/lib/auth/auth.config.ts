@@ -1,4 +1,4 @@
-import { LoginSchema } from "@/schemas/auth";
+import { LoginSchema } from "@/schemas/users/auth";
 import { prisma } from "@dmu/prisma";
 import { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";

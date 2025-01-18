@@ -5,9 +5,11 @@
   "main": "index.ts",
   "dependencies": {
     "@dmu/tsconfig": "workspace:*",
-    "bcryptjs": "^2.4.3"
+    "bcryptjs": "^2.4.3",
+    "secure-random-password": "^0.2.3"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/secure-random-password": "^0.2.3"
   }
 }

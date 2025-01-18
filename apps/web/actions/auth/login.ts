@@ -1,7 +1,7 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { LoginSchema } from "@/schemas/auth";
+import { LoginSchema } from "@/schemas/users/auth";
 import { actionClient } from "../action-client";
 import { prisma } from "@dmu/prisma";
 import { messages } from "@/lib/messages";

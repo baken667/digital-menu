@@ -8,7 +8,7 @@ import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 
 import { loginAction } from "@/actions/auth/login";
-import { LoginSchema } from "@/schemas/auth";
+import { LoginSchema } from "@/schemas/users/auth";
 import {
   Form,
   FormControl,
