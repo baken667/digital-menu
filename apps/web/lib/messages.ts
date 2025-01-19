@@ -47,6 +47,7 @@ export const messages = {
     locked: "Заблокирован",
     cancel: "Отменить",
     continue: "Продолжить",
+    search: "Поиск",
   },
   users: {
     create: "Создать пользователя",

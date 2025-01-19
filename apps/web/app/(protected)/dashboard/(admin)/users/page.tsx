@@ -1,7 +1,7 @@
 import PageHeader from "@/components/layouts/dashboard/page-header";
-import CreateUserModal from "@/components/users/create-user-modal";
-import { messages } from "@/lib/messages";
 import UsersPageClient from "./pageClient";
+import { messages } from "@/lib/messages";
+import CreateUserModal from "@/components/users/create-user-modal";
 
 export default function UsersPage() {
   return (
