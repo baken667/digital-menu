@@ -1,8 +1,6 @@
 "use server";
 
-import {
-  returnValidationErrors,
-} from "next-safe-action";
+import { returnValidationErrors } from "next-safe-action";
 import { prisma } from "@dmu/prisma";
 import { generateRandomPassword, hashPassword } from "@dmu/features/auth";
 import { CreateUserSchema } from "@/schemas/users/create-user";
@@ -57,6 +55,7 @@ export const createUserAction = actionClient
 
       return {
         success: true,
+        message: messages.users.created,
         data: user,
       };
     } catch (error) {

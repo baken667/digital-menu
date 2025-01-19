@@ -5,13 +5,13 @@ import UsersPageClient from "./pageClient";
 
 export default function UsersPage() {
   return (
-    <div>
+    <>
       <PageHeader
         title={messages.common.users}
         description={messages.common.usersDescription}
         actions={<CreateUserModal />}
       />
       <UsersPageClient />
-    </div>
+    </>
   );
 }

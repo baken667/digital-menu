@@ -1,6 +1,6 @@
 enum UserRoles {
-  admin
   owner
+  admin
 }
 
 model User {

@@ -2,7 +2,7 @@ import { TRPCHandler } from "@/types/trpc-handler";
 import { TRPCError } from "@trpc/server";
 import { UserRoles } from "@dmu/prisma/client";
 import { db } from "@/lib/prisma/db";
-import { PaginatedParams } from "@/schemas/users/pagination-schema";
+import { PaginatedParams } from "@/schemas/pagination-schema";
 
 export async function handlerGetUsers({
   input: { input, role, limit, page },
@@ -17,7 +17,7 @@ export async function handlerGetUsers({
     });
   }
 
-  const data = await db.user
+  const [data, pagination] = await db.user
     .paginate({
       where: {
         ...(input && {
@@ -27,6 +27,10 @@ export async function handlerGetUsers({
           ],
         }),
         ...(role && { role }),
+        NOT: { id: ctx.session.user.id },
+      },
+      omit: {
+        passwordHash: true,
       },
     })
     .withPages({
@@ -35,5 +39,5 @@ export async function handlerGetUsers({
       includePageCount: true,
     });
 
-  return data;
+  return { data, pagination };
 }

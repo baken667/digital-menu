@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { toast } from "sonner";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { createUserAction } from "@/actions/users/create-user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,24 +37,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { toast } from "sonner";
+import { trpc } from "@/trpc/provider";
 
 export default function CreateUserModal() {
+  const [open, setOpen] = useState(false);
+  const { users } = trpc.useUtils();
   const { form, handleSubmitWithAction, action } = useHookFormAction(
     createUserAction,
     zodResolver(CreateUserSchema),
     {
       formProps: {
         defaultValues: {
-          name: "Baken2",
-          role: "admin",
-          email: "baken.wws@icloud.com",
+          name: "",
+          role: "owner",
+          email: "",
         },
       },
       actionProps: {
         onSuccess: async ({ data }) => {
           if (data?.success) {
             toast.success(data.message);
+            users.list.invalidate();
+            setOpen(false);
+            form.reset();
           } else {
             toast.error(data?.message);
           }
@@ -62,7 +69,7 @@ export default function CreateUserModal() {
   );
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>{messages.users.create}</Button>
       </DialogTrigger>
