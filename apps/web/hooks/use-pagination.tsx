@@ -1,38 +1,42 @@
 "use client";
 import { DEFAULT_PAGINATION, MAX_PAGINATION } from "@/lib/consts";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 
 export function usePagination(
   defaultLimit = DEFAULT_PAGINATION,
   defaultPage = 1
 ) {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const { replace } = useRouter();
 
   const limit = Math.min(
     parseInt(searchParams.get("limit") || defaultLimit.toString(), 10),
     MAX_PAGINATION
   );
+
   const page = Math.max(
     parseInt(searchParams.get("page") || defaultPage.toString(), 10),
     1
   );
 
-  const updateSearchParams = (key: string, value: number | undefined) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const updateSearchParams = useDebouncedCallback(
+    (key: string, value: number) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    if (value === undefined || value) {
-      params.delete(key);
-    } else {
-      params.set(key, value.toString());
-    }
+      if (value) {
+        params.set(key, value.toString());
+      } else {
+        params.delete(key);
+      }
 
-    router.push(`?${params.toString()}`);
-  };
+      replace(`?${params.toString()}`);
+    },
+    100
+  );
 
   const setPage = (newPage: number) => {
     const sanitizedPage = Math.max(newPage, 1);
-
     updateSearchParams("page", sanitizedPage);
   };
 

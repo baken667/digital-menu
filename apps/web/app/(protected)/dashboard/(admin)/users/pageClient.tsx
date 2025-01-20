@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { useSearch } from "@/hooks/use-search";
 import PageLoading from "@/components/common/page-loading";
 import { messages } from "@/lib/messages";
+import PagePagination from "@/components/common/page-pagination";
 
 export default function UsersPageClient() {
-  const { page, limit } = usePagination();
+  const { page, limit, setPage } = usePagination();
 
   const { searchTerm, handleSearch } = useSearch();
 
@@ -36,6 +37,7 @@ export default function UsersPageClient() {
           ))}
         </div>
       )}
+      <PagePagination pagination={data?.pagination} setPage={setPage} />
     </div>
   );
 }

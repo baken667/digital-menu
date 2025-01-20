@@ -48,6 +48,8 @@ export const messages = {
     cancel: "Отменить",
     continue: "Продолжить",
     search: "Поиск",
+    back: "Назад",
+    next: "Вперед",
   },
   users: {
     create: "Создать пользователя",

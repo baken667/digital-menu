@@ -1,4 +1,3 @@
-// hooks/use-search.ts
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter, useSearchParams } from "next/navigation";
 
