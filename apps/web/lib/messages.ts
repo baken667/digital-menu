@@ -6,12 +6,14 @@ export const messages = {
     users: {
       notFound: "Пользователь не найден",
       alreadyExists: "Пользователь с такой почтой уже существует",
+      notFoundPlural: "Пользователи не найдены",
     },
     common: {
       unxpectedError: "Произошла непредвиденная ошибка",
       forbidden: "Доступ запрещен",
       databaseError: "Произошла ошибка в базе данных",
       unauthorized: "Пользователь не авторизован",
+      notFound: "Ресурс не найден",
     },
   },
   auth: {
@@ -33,14 +35,19 @@ export const messages = {
     dashboard: "Панель управления",
     profile: "Профиль",
     users: "Пользователи",
+    establishments: "Заведения",
+    establishmentsDescription: "Управление заведениями",
+    establishment: "Заведение",
     usersDescription: "Управление пользователями",
     welcome: "Добро пожаловать",
     signature: "С уважением, Digital Menu",
     password: "Пароль",
     email: "Электронная почта",
     link: "Ссылка",
+    slug: "Слаг",
     save: "Сохранить",
     username: "Имя пользователя",
+    name: "Название",
     role: "Роль",
     admin: "Администратор",
     owner: "Владелец заведения",
@@ -50,6 +57,15 @@ export const messages = {
     search: "Поиск",
     back: "Назад",
     next: "Вперед",
+  },
+  validation: {
+    required: "Обязательное поле",
+    email: "Неверная почта",
+    enum: "Неверное значение",
+    format: "Неверный формат",
+    alreadyExists: "Значение уже существует",
+    min: (length: number) => `Минимальная длина поля ${length}`,
+    max: (length: number) => `Максимальная длина поля ${length}`,
   },
   users: {
     create: "Создать пользователя",
@@ -63,11 +79,9 @@ export const messages = {
       "Все данные пользователя и связанные с ним заказы будут удалены!",
     deleted: "Пользователь успешно удален",
   },
-  validation: {
-    required: "Обязательное поле",
-    email: "Неверная почта",
-    enum: "Неверное значение",
-    min: (length: number) => `Минимальная длина поля ${length}`,
-    max: (length: number) => `Максимальная длина поля ${length}`,
-  }
+  establishments: {
+    create: "Создать заведение",
+    createDescription: "Создание нового заведения",
+    created: "Заведение успешно создано",
+  },
 } as const;

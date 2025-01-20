@@ -10,9 +10,11 @@ import { Prisma } from "@prisma/client";
 import { getResend } from "@/lib/resend";
 import { DOMAIN, FROM_EMAIL } from "@/lib/consts";
 import { NewAccountEmail } from "@/components/email/new-account-email";
+import { adminMiddleware } from "../middleware/admin-middleware";
 
 export const createUserAction = actionClient
   .schema(CreateUserSchema)
+  .use(adminMiddleware)
   .action(async ({ parsedInput: { name, email, role } }) => {
     try {
       const existUser = await prisma.user.findUnique({

@@ -7,6 +7,7 @@ import { useSearch } from "@/hooks/use-search";
 import PageLoading from "@/components/common/page-loading";
 import { messages } from "@/lib/messages";
 import PagePagination from "@/components/common/page-pagination";
+import NotFoundBanner from "@/components/common/not-found-banner";
 
 export default function UsersPageClient() {
   const { page, limit, setPage } = usePagination();
@@ -21,12 +22,14 @@ export default function UsersPageClient() {
 
   return (
     <div className="flex-1 flex flex-col space-y-4">
-      <div className="flex flex-row">
-        <Input
-          onChange={(e) => handleSearch(e.target.value)}
-          defaultValue={searchTerm}
-          placeholder={messages.common.search}
-        />
+      <div className="flex flex-row justify-between items-center">
+        <div className="flex gap-4">
+          <Input
+            onChange={(e) => handleSearch(e.target.value)}
+            defaultValue={searchTerm}
+            placeholder={messages.common.search}
+          />
+        </div>
       </div>
       {isLoading ? (
         <PageLoading />
@@ -36,6 +39,10 @@ export default function UsersPageClient() {
             <UserCard key={user.id} user={user} isFetching={isRefetching} />
           ))}
         </div>
+      )}
+
+      {!isLoading && data?.data.length === 0 && (
+        <NotFoundBanner title={messages.errors.users.notFoundPlural} />
       )}
       <PagePagination pagination={data?.pagination} setPage={setPage} />
     </div>

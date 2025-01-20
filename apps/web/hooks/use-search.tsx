@@ -1,7 +1,7 @@
 import { useDebouncedCallback } from "use-debounce";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export function useSearch() {
+export function useSearch(queryParam: string = "search") {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
@@ -9,16 +9,16 @@ export function useSearch() {
     const params = new URLSearchParams(searchParams);
     params.delete("page");
     if (term) {
-      params.set("search", term);
+      params.set(queryParam, term);
     } else {
-      params.delete("search"); 
+      params.delete(queryParam); 
     }
 
     replace(`?${params.toString()}`);
   }, 300);
 
   return {
-    searchTerm: searchParams.get("search")?.toString() || "",
+    searchTerm: searchParams.get(queryParam)?.toString() || "",
     handleSearch,
   };
 }

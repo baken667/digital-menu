@@ -1,16 +1,17 @@
+import PageHeader from "@/components/layouts/dashboard/page-header";
 import DashboardClient from "./pageClient";
-import Link from "next/link";
+import { messages } from "@/lib/messages";
+import CreateEstablishmentModal from "@/components/establishments/create-establishment-modal";
 
 export default function Dashboard() {
   return (
-    <div>
-      <div>
-        <h3>Dashboard</h3>
-      </div>
-      <div>
-        <Link href="/">Home</Link>
-      </div>
+    <>
+      <PageHeader
+        title={messages.common.establishments}
+        description={messages.common.establishmentsDescription}
+        actions={<CreateEstablishmentModal />}
+      />
       <DashboardClient />
-    </div>
+    </>
   );
 }
