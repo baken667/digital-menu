@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { UserRoles } from "@dmu/prisma/client";
-import { HomeIcon, LucideIcon, Users2Icon } from "lucide-react";
+import { HomeIcon, LucideIcon, StoreIcon, Users2Icon } from "lucide-react";
 
 import {
   Sidebar,
@@ -15,7 +15,7 @@ import {
 import { messages } from "@/lib/messages";
 import { useSession } from "next-auth/react";
 import React from "react";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 
 type Route = {
   href: string;
@@ -25,13 +25,17 @@ type Route = {
   exact?: boolean;
 };
 
-const routes: Route[] = [
+const baseRoutes: Route[] = [
   {
     href: "/dashboard/establishments",
-    label: messages.common.dashboard,
-    icon: HomeIcon,
+    label: messages.common.establishments,
+    icon: StoreIcon,
     exact: true,
   },
+];
+
+const adminRoutes: Route[] = [
+  ...baseRoutes,
   {
     href: "/dashboard/users",
     label: messages.common.users,
@@ -39,6 +43,24 @@ const routes: Route[] = [
     roles: ["admin"],
   },
 ];
+
+const ownerRoutes = (est?: string): Route[] => {
+  let routes: Route[] = [...baseRoutes];
+
+  if (est) {
+    routes = [
+      {
+        href: `/dashboard/establishments/${est}`,
+        label: "Основные данные",
+        icon: HomeIcon,
+        exact: true,
+      },
+      ...routes,
+    ];
+  }
+
+  return routes;
+};
 
 function SidebarItem({ href, label, icon: Icon, roles, exact }: Route) {
   const { data } = useSession();
@@ -66,14 +88,21 @@ function SidebarItem({ href, label, icon: Icon, roles, exact }: Route) {
 }
 
 export default function NavigationSidebar() {
+  const { data: session } = useSession();
+  const { est } = useParams<{ est?: string }>();
   return (
     <Sidebar variant="floating">
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {routes.map((route) => (
-              <SidebarItem key={route.href} {...route} />
-            ))}
+            {session?.user.role === "admin" &&
+              adminRoutes.map((route) => (
+                <SidebarItem key={route.href} {...route} />
+              ))}
+            {session?.user.role === "owner" &&
+              ownerRoutes(est).map((route) => (
+                <SidebarItem key={route.href} {...route} />
+              ))}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

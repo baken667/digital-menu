@@ -23,27 +23,33 @@ export default function UserCard({
 
   return (
     <Card className={isFetching ? "animate-pulse" : ""}>
-      <CardContent className="px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarFallback>{shortname}</AvatarFallback>
-          </Avatar>
-          <div>
+      <CardContent className="px-6 py-4 flex flex-col md:flex-row md:items-center gap-6 justify-between">
+        <div className="flex flex-col gap-2 lg:flex-row">
+          <div className="flex flex-row gap-4">
+            <Avatar>
+              <AvatarFallback>{shortname}</AvatarFallback>
+            </Avatar>
             <div>
-              <h3 className="font-semibold text-base">{user.name}</h3>
-            </div>
-            <div className="flex gap-4 items-center">
-              <p className="text-muted-foreground text-sm">{user.email}</p>
-              <Badge variant={user.role === "admin" ? "default" : "outline"}>
-                {messages.common[user.role]}
-              </Badge>
-              {user.lockedAt && (
-                <Badge variant="destructive">{messages.common.locked}</Badge>
-              )}
+              <div>
+                <h3 className="font-semibold text-base">{user.name}</h3>
+              </div>
+              <div className="">
+                <p className="text-muted-foreground text-sm flex-col">
+                  {user.email}
+                </p>
+              </div>
             </div>
           </div>
+          <div className="flex flex-row items-end gap-2">
+            <Badge variant={user.role === "admin" ? "default" : "outline"}>
+              {messages.common[user.role]}
+            </Badge>
+            {user.lockedAt && (
+              <Badge variant="destructive">{messages.common.locked}</Badge>
+            )}
+          </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-end">
           <DeleteUser id={user.id} disabled={isFetching} />
           <EditUserModal userId={user.id}>
             <DialogTrigger asChild>
