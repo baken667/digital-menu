@@ -22,5 +22,9 @@ export async function handlerDeleteEstablishment({
     });
   }
 
+  await prisma.establishment.delete({
+    where: { ...establishment },
+  });
+
   return;
 }
