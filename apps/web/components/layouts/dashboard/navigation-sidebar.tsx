@@ -27,7 +27,7 @@ type Route = {
 
 const routes: Route[] = [
   {
-    href: "/dashboard",
+    href: "/dashboard/establishments",
     label: messages.common.dashboard,
     icon: HomeIcon,
     exact: true,

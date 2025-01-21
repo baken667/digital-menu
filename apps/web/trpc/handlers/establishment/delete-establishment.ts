@@ -1,27 +1,26 @@
-import { messages } from "@/lib/messages";
 import { TRPCHandler } from "@/types/trpc-handler";
 import { prisma } from "@dmu/prisma";
 import { TRPCError } from "@trpc/server";
+import { messages } from "@/lib/messages";
 
-export async function handleDeleteUser({
+export async function handlerDeleteEstablishment({
   input,
 }: TRPCHandler<{
   input: string;
 }>) {
-  const user = await prisma.user.findUnique({
+  const establishment = await prisma.establishment.findUnique({
     where: { id: input },
+    select: {
+      id: true,
+    },
   });
 
-  if (!user) {
+  if (!establishment) {
     throw new TRPCError({
-      message: messages.errors.users.notFound,
+      message: messages.errors.common.notFound,
       code: "NOT_FOUND",
     });
   }
-
-  await prisma.user.delete({
-    where: { id: input },
-  });
 
   return;
 }

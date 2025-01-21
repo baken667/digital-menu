@@ -10,6 +10,7 @@
     "push": "npx prisma db push --schema=./prisma",
     "migrate:dev": "npx prisma migrate dev --schema=./prisma",
     "studio": "npx prisma studio --schema=./prisma --browser none",
+    "dev": "pnpm run studio",
     "prebuild": "pnpm run generate",
     "predev": "pnpm run generate",
     "seed": "npx prisma db seed --schema=./prisma"

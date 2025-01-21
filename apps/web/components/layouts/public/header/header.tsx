@@ -7,6 +7,7 @@ import Logo from "@/components/common/logo";
 import { Button } from "@/components/ui/button";
 import { messages } from "@/lib/messages";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 
 export default function Header() {
   const { status } = useSession();
@@ -21,7 +22,7 @@ export default function Header() {
           <Skeleton className="h-10 w-32" />
         ) : (
           <Button asChild>
-            <Link href={status === "authenticated" ? "/dashboard" : "/login"}>
+            <Link href={status === "authenticated" ? DEFAULT_LOGIN_REDIRECT : "/login"}>
               {status === "authenticated"
                 ? messages.common.dashboard
                 : messages.common.auth.login}

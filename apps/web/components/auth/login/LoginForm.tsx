@@ -35,8 +35,13 @@ function LoginForm() {
       actionProps: {
         onSuccess: async ({ data }) => {
           if (data?.success) {
+            const loginRedirect = data.user?.defaultEstablishmentId
+              ? `${DEFAULT_LOGIN_REDIRECT}/${data.user?.defaultEstablishmentId}`
+              : DEFAULT_LOGIN_REDIRECT;
+
+              console.log(loginRedirect);
             signIn(undefined, {
-              redirectTo: DEFAULT_LOGIN_REDIRECT,
+              redirectTo: loginRedirect,
             });
           } else {
             toast.error(data?.message);

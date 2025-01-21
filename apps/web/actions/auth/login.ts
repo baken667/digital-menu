@@ -16,7 +16,6 @@ export const loginAction = actionClient
         where: { email },
       });
 
-
       if (!user || !user.passwordHash) {
         return {
           success: false,
@@ -24,7 +23,9 @@ export const loginAction = actionClient
         };
       }
 
-      const compare = await comparePassword(password, user.passwordHash);
+      const {passwordHash, ...userWithoutPassword} = user
+
+      const compare = await comparePassword(password, passwordHash);
 
       if (!compare) {
         return {
@@ -42,7 +43,7 @@ export const loginAction = actionClient
       return {
         success: true,
         message: messages.auth.successfulLogin,
-        user: user,
+        user: userWithoutPassword,
       };
     } catch (error) {
       if (error instanceof AuthError) {
