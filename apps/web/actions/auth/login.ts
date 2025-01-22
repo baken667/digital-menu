@@ -14,6 +14,12 @@ export const loginAction = actionClient
     try {
       const user = await prisma.user.findUnique({
         where: { email },
+        select: {
+          id: true,
+          passwordHash: true,
+          invalidLoginAttempts: true,
+          lockedAt: true,
+        },
       });
 
       if (!user || !user.passwordHash) {
@@ -23,9 +29,7 @@ export const loginAction = actionClient
         };
       }
 
-      const {passwordHash, ...userWithoutPassword} = user
-
-      const compare = await comparePassword(password, passwordHash);
+      const compare = await comparePassword(password, user.passwordHash);
 
       if (!compare) {
         return {
@@ -43,7 +47,6 @@ export const loginAction = actionClient
       return {
         success: true,
         message: messages.auth.successfulLogin,
-        user: userWithoutPassword,
       };
     } catch (error) {
       if (error instanceof AuthError) {
@@ -56,14 +59,14 @@ export const loginAction = actionClient
           default:
             return {
               success: false,
-              message: messages.errors.common.unxpectedError,
+              message: messages.errors.common.unexpectedError,
             };
         }
       }
 
       return {
         success: false,
-        message: messages.errors.common.unxpectedError,
+        message: messages.errors.common.unexpectedError,
       };
     }
   });

@@ -9,7 +9,7 @@ export const messages = {
       notFoundPlural: "Пользователи не найдены",
     },
     common: {
-      unxpectedError: "Произошла непредвиденная ошибка",
+      unexpectedError: "Произошла непредвиденная ошибка",
       forbidden: "Доступ запрещен",
       databaseError: "Произошла ошибка в базе данных",
       unauthorized: "Пользователь не авторизован",
