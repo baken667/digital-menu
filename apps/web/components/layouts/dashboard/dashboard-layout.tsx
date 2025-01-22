@@ -10,7 +10,7 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <NavigationSidebar />
-      <div className="flex-1 flex flex-col md:pb-2">
+      <div className="flex-1 flex flex-col pb-2 max-w-screen-xl mx-auto">
         <Header />
         <main className="flex flex-col flex-1 px-6">{children}</main>
       </div>

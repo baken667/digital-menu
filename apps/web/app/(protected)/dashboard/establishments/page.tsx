@@ -1,5 +1,5 @@
 import PageHeader from "@/components/layouts/dashboard/page-header";
-import DashboardClient from "../pageClient";
+import DashboardClient from "./pageClient";
 import { messages } from "@/lib/messages";
 import CreateEstablishmentModal from "@/components/establishments/create-establishment-modal";
 

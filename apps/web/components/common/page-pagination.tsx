@@ -30,7 +30,6 @@ export default function PagePagination({
   }
 
   const { pageCount, currentPage, isFirstPage, isLastPage } = pagination;
-  const showAfterEllipsisCount = 4;
 
   const handleNext = () => {
     if (!isLastPage) setPage(currentPage + 1);
@@ -45,37 +44,29 @@ export default function PagePagination({
   };
 
   const getPages = () => {
-    const pages: (number | "...")[] = [];
-    const showBeforeEllipsisCount = Math.min(
-      showAfterEllipsisCount,
-      pageCount
-    );
+    const pages = [];
 
-    for (let i = 1; i <= Math.min(3, pageCount); i++) {
-      pages.push(i);
-    }
+    pages.push(1);
 
-    if (currentPage > showBeforeEllipsisCount + 2) {
+    if (currentPage > 3) {
       pages.push("...");
     }
 
     for (
-      let i = Math.max(4, currentPage - showBeforeEllipsisCount);
-      i <= Math.min(pageCount - 3, currentPage + showBeforeEllipsisCount);
+      let i = Math.max(2, currentPage - 1);
+      i <= Math.min(pageCount - 1, currentPage + 1);
       i++
     ) {
       pages.push(i);
     }
 
-    if (currentPage < pageCount - showBeforeEllipsisCount - 1) {
+    if (currentPage < pageCount - 2) {
       pages.push("...");
     }
 
-    for (let i = Math.max(pageCount - 2, 4); i <= pageCount; i++) {
-      pages.push(i);
+    if (pageCount > 1) {
+      pages.push(pageCount);
     }
-
-    console.log({ pages });
     return pages;
   };
 
@@ -83,29 +74,46 @@ export default function PagePagination({
 
   return (
     <Pagination>
-      <PaginationContent>
-        <PaginationItem>
-          <PaginationPrevious isDisabled={isFirstPage} onClick={handlePrevious} />
+      <PaginationContent className="flex flex-col md:flex-row gap-2">
+        <PaginationItem className="hidden md:block">
+          <PaginationPrevious
+            isDisabled={isFirstPage}
+            onClick={handlePrevious}
+          />
         </PaginationItem>
-        {pages.map((page, index) =>
-          page === "..." ? (
-            <PaginationItem key={index}>
-              <PaginationEllipsis />
-            </PaginationItem>
-          ) : (
-            <PaginationItem key={page}>
-              <PaginationLink
-                isActive={page === currentPage}
-                onClick={() => handlePageClick(page as number)}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          )
-        )}
-        <PaginationItem>
+        <div className="flex gap-2">
+          {pages.map((page, index) =>
+            page === "..." ? (
+              <PaginationItem key={index}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  isActive={page === currentPage}
+                  onClick={() => handlePageClick(page as number)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
+        </div>
+        <PaginationItem className="hidden md:block">
           <PaginationNext isDisabled={isLastPage} onClick={handleNext} />
         </PaginationItem>
+        <div className="flex md:hidden">
+          <PaginationItem>
+            <PaginationPrevious
+              isDisabled={isFirstPage}
+              onClick={handlePrevious}
+            />
+          </PaginationItem>
+
+          <PaginationItem>
+            <PaginationNext isDisabled={isLastPage} onClick={handleNext} />
+          </PaginationItem>
+        </div>
       </PaginationContent>
     </Pagination>
   );
