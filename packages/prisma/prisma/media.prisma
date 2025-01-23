@@ -1,0 +1,7 @@
+model Media {
+  id        String   @id @default(cuid())
+  path      String?
+  thumbnail Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

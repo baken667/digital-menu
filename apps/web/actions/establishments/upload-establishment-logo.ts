@@ -1,15 +1,12 @@
 "use server";
 
-import { v4 as uuidv4 } from "uuid";
 import { prisma } from "@dmu/prisma";
 import { Prisma } from "@dmu/prisma/client";
 import { UploadEstablishmentLogoSchema } from "@/schemas/establishments/upload-logo";
 import { actionClient } from "../action-client";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { messages } from "@/lib/messages";
-import { BUCKET } from "@/lib/consts";
-import { s3Client } from "@/lib/s3";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { storageClient } from "@/lib/storage";
 import { z } from "zod";
 
 export const uploadEstablishmentLogoAction = actionClient
@@ -35,24 +32,15 @@ export const uploadEstablishmentLogoAction = actionClient
         }
 
         if (file instanceof File) {
-          const contentType = file.type;
-          const fileBuffer = await file.arrayBuffer();
-          const fileKey = `logos/${uuidv4()}`;
+          const fileBuffer = Buffer.from(await file.arrayBuffer());
 
-          const data = await s3Client.send(
-            new PutObjectCommand({
-              Bucket: BUCKET,
-              Key: fileKey,
-              Body: Buffer.from(fileBuffer),
-              ContentType: contentType,
-            }),
+          const data = await storageClient.upload(
+            fileBuffer,
+            "establishment-logos"
           );
-
-          const imageUrl = `${process.env.S3_ENDPOINT}/${fileKey}`;
 
           return {
             success: true,
-            imageUrl,
             data,
           };
         }
@@ -66,5 +54,5 @@ export const uploadEstablishmentLogoAction = actionClient
         }
         throw error;
       }
-    },
+    }
   );

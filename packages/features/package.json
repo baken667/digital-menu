@@ -4,12 +4,19 @@
   "private": true,
   "main": "index.ts",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.732.0",
     "@dmu/tsconfig": "workspace:*",
     "bcryptjs": "^2.4.3",
-    "secure-random-password": "^0.2.3"
+    "mime-types": "^2.1.35",
+    "node-addon-api": "^8.3.0",
+    "node-gyp": "^11.0.0",
+    "secure-random-password": "^0.2.3",
+    "sharp": "^0.33.5",
+    "uuid": "^11.0.5"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/mime-types": "^2.1.4",
     "@types/secure-random-password": "^0.2.3"
   }
 }
