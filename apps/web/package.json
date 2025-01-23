@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
+    "@aws-sdk/client-s3": "^3.732.0",
+    "@aws-sdk/s3-presigned-post": "^3.732.0",
     "@dmu/features": "workspace:*",
     "@dmu/prisma": "workspace:*",
     "@hookform/resolvers": "^3.10.0",
@@ -48,6 +50,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
+    "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {

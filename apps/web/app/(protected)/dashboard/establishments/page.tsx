@@ -3,6 +3,7 @@ import DashboardClient from "./pageClient";
 import { messages } from "@/lib/messages";
 import CreateEstablishmentModal from "@/components/establishments/create-establishment-modal";
 import ProtectedComponent from "@/components/common/protectedComponent";
+import "@/lib/s3";
 
 export default function Dashboard() {
   return (
