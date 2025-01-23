@@ -14,6 +14,7 @@ export const messages = {
       databaseError: "Произошла ошибка в базе данных",
       unauthorized: "Пользователь не авторизован",
       notFound: "Ресурс не найден",
+      internalServerError: "Внутренняя ошибка сервера",
     },
   },
   auth: {
@@ -89,5 +90,6 @@ export const messages = {
     deleteEstablishmentDescription:
       "Все данные заведения и связанные с ним данные будут удалены!",
     deleted: "Заведение успешно удалено",
+    logoDeleted: "Логотип заведения успешно удален",
   },
 } as const;

@@ -31,6 +31,9 @@ export default function UploadEstablishmentLogo({ estId }: PropsType) {
         onSuccess: (data) => {
           console.log(data.data);
         },
+        onError: (data) => {
+          console.log(data);
+        }
       },
       formProps: {
         defaultValues: {

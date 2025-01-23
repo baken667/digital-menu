@@ -1,13 +1,13 @@
 "use server";
 
+import { z } from "zod";
 import { prisma } from "@dmu/prisma";
 import { Prisma } from "@dmu/prisma/client";
 import { UploadEstablishmentLogoSchema } from "@/schemas/establishments/upload-logo";
 import { actionClient } from "../action-client";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { messages } from "@/lib/messages";
-import { storageClient } from "@/lib/storage";
-import { z } from "zod";
+import { upload } from "@/lib/storage";
 
 export const uploadEstablishmentLogoAction = actionClient
   .schema(UploadEstablishmentLogoSchema)
@@ -34,18 +34,24 @@ export const uploadEstablishmentLogoAction = actionClient
         if (file instanceof File) {
           const fileBuffer = Buffer.from(await file.arrayBuffer());
 
-          const data = await storageClient.upload(
-            fileBuffer,
-            "establishment-logos"
-          );
+          const data = await upload(fileBuffer, "establishment-logos", [120]);
+
+          await prisma.establishment.update({
+            where: { id: estId },
+            data: {
+              logo: data.key,
+            },
+          });
 
           return {
             success: true,
             data,
           };
         }
+
         throw new Error("не файл");
       } catch (error) {
+        console.error(error);
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
           return {
             success: false,

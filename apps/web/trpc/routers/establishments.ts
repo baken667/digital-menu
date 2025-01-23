@@ -5,6 +5,7 @@ import { PaginatedParamsSchema } from "@/schemas/pagination-schema";
 import { handlerGetEstablishments } from "../handlers/establishment/get-establishments";
 import { handlerDeleteEstablishment } from "../handlers/establishment/delete-establishment";
 import adminTRPCMiddleware from "../handlers/middleware/admin-middleware";
+import { handlerDeleteEstablishmentLogo } from "../handlers/establishment/delete-establishment-logo";
 
 export const t = getTrpc();
 
@@ -22,4 +23,7 @@ export const establishmentsRouter = t.router({
     .input(z.string())
     .use(adminTRPCMiddleware)
     .mutation(handlerDeleteEstablishment),
+  deleteLogo: t.procedure
+    .input(z.string())
+    .mutation(handlerDeleteEstablishmentLogo),
 });
