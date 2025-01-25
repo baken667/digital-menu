@@ -1,5 +1,6 @@
 "use client";
 import { useTransition } from "react";
+import { Loader2Icon, LogOutIcon, User2Icon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import initials from "initials";
 
@@ -16,7 +17,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { messages } from "@/lib/messages";
-import { Loader2Icon, LogOutIcon, User2Icon } from "lucide-react";
 
 function UserAvatar({ username }: { username: string }) {
   const shortname = initials(username);

@@ -1,15 +1,12 @@
 import {
   S3Client,
   PutObjectCommand,
-  GetObjectCommand,
-  DeleteObjectCommand,
   ListObjectsV2Command,
   DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
 import { v4 as uuid } from "uuid";
 import { BUCKET } from "../consts";
 import { resizeImage, toWebp } from "./utils";
-import { TRPCError } from "@trpc/server";
 import { messages } from "../messages";
 
 if (

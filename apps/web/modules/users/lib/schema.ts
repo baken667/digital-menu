@@ -3,11 +3,6 @@ import { messages } from "@/lib/messages";
 import { UserRoles } from "@prisma/client";
 import { CreateUserSchema } from "@/schemas/users/create-user";
 
-export const UserLoginSchema = z.object({
-  email: z.string().email(messages.validation.email),
-  password: z.string().min(1, messages.validation.required),
-});
-
 export const UserCreateSchema = z.object({
   name: z.string().min(1, messages.validation.required),
   email: z

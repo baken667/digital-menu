@@ -1,6 +1,5 @@
-import sharp from "sharp";
 import { NextRequest, NextResponse } from "next/server";
-import { get, storage } from "@/lib/storage";
+import { storage } from "@/lib/storage";
 import { messages } from "@/lib/messages";
 import { GetObjectCommand, S3ServiceException } from "@aws-sdk/client-s3";
 import { BUCKET } from "@/lib/consts";

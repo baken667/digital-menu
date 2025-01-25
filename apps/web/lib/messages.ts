@@ -2,6 +2,7 @@ export const messages = {
   errors: {
     auth: {
       invalidCredentials: "Неверные учетные данные",
+      locked: "Ваш аккаунт заблокирован",
     },
     users: {
       notFound: "Пользователь не найден",

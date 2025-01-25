@@ -1,18 +1,18 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { LoginSchema } from "@/schemas/users/auth";
-import { actionClient } from "../action-client";
-import { prisma } from "@dmu/prisma";
+import { actionClient } from "@/actions/action-client";
 import { messages } from "@/lib/messages";
-import { signIn } from "@/auth";
+import { LoginSchema } from "@/schemas/users/auth";
+import { db } from "@/lib/prisma/db";
 import { comparePassword } from "@dmu/features/auth";
+import { signIn } from "@/auth";
 
-export const loginAction = actionClient
+export const authLoginAction = actionClient
   .schema(LoginSchema)
   .action(async ({ parsedInput: { email, password } }) => {
     try {
-      const user = await prisma.user.findUnique({
+      const user = await db.user.findUnique({
         where: { email },
         select: {
           id: true,
@@ -21,6 +21,13 @@ export const loginAction = actionClient
           lockedAt: true,
         },
       });
+
+      if (user?.lockedAt) {
+        return {
+          success: false,
+          message: messages.errors.auth.locked,
+        };
+      }
 
       if (!user || !user.passwordHash) {
         return {
