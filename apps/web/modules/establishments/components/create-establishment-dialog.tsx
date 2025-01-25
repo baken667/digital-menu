@@ -7,7 +7,7 @@ import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hoo
 import { zodResolver } from "@hookform/resolvers/zod";
 import { messages } from "@/lib/messages";
 import { Button } from "@/components/ui/button";
-import { trpc } from "@/trpc/provider";
+import { trpc } from "@/lib/trpc/provider";
 import { EstablishmentCreateSchema } from "@/modules/establishments/lib/schema";
 import { EstablishmentCreateAction } from "@/modules/establishments/actions/establishment-create-action";
 import {

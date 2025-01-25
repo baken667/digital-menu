@@ -1,31 +1,34 @@
-import { toast } from "sonner";
+"use client";
+
 import { Loader2Icon, Trash2Icon } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
+  AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  AlertDialogAction,
+  AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { messages } from "@/lib/messages";
 import { trpc } from "@/lib/trpc/provider";
+import { toast } from "sonner";
 
-interface Props {
+export default function DeleteUser({
+  id,
+  disabled,
+}: {
   id: string;
   disabled?: boolean;
-}
-
-export default function DeleteEstablishment({ id, disabled }: Props) {
-  const { establishment } = trpc.useUtils();
-
-  const { isLoading, mutate } = trpc.establishment.delete.useMutation({
+}) {
+  const { users } = trpc.useUtils();
+  const { isLoading, mutate } = trpc.users.delete.useMutation({
     onSuccess: () => {
-      toast.success(messages.establishments.deleted);
-      establishment.invalidate();
+      toast.success(messages.users.deleted);
+      users.invalidate();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -42,7 +45,7 @@ export default function DeleteEstablishment({ id, disabled }: Props) {
         <Button
           size="icon"
           variant="destructive"
-          disabled={disabled || isLoading}
+          disabled={isLoading || disabled}
         >
           {isLoading ? (
             <Loader2Icon className="animate-spin" />
@@ -52,10 +55,12 @@ export default function DeleteEstablishment({ id, disabled }: Props) {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
-        <AlertDialogTitle>{messages.alert.confirmAction}</AlertDialogTitle>
-        <AlertDialogDescription>
-          {messages.establishments.deleteEstablishmentDescription}
-        </AlertDialogDescription>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{messages.alert.confirmAction}</AlertDialogTitle>
+          <AlertDialogDescription>
+            {messages.users.deleteUserDescription}
+          </AlertDialogDescription>
+        </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{messages.common.cancel}</AlertDialogCancel>
           <AlertDialogAction onClick={handleDelete}>

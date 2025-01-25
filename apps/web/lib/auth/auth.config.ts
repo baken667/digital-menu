@@ -1,14 +1,14 @@
-import { LoginSchema } from "@/schemas/users/auth";
 import { prisma } from "@dmu/prisma";
 import { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { comparePassword } from "@dmu/features/auth";
+import { AuthLoginSchema } from "@/modules/auth/lib/schema";
 
 export const authConfig = {
   providers: [
     Credentials({
       async authorize(credentials) {
-        const validated = LoginSchema.safeParse(credentials);
+        const validated = AuthLoginSchema.safeParse(credentials);
 
         if (validated.success) {
           const { email, password } = validated.data;

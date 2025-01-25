@@ -1,8 +1,8 @@
 import ProtectedComponent from "@/components/common/protectedComponent";
-import PageHeader from "@/components/layouts/dashboard/page-header";
 import { messages } from "@/lib/messages";
 import EstablishmentsPageClient from "./page-client";
 import CreateEstablishmentDialog from "./components/create-establishment-dialog";
+import PageHeader from "../../components/dashboard/page-header";
 
 export default function EstablishmentsPage() {
   return (

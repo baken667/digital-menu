@@ -2,11 +2,11 @@
 import { returnValidationErrors } from "next-safe-action";
 
 import { db } from "@/lib/prisma/db";
-import actionClient from "@/lib/actions/action-client";
 import { Prisma } from "@dmu/prisma/client";
 import { EstablishmentCreateSchema } from "../lib/schema";
 import { messages } from "@/lib/messages";
 import ActionAdminMiddleware from "@/lib/actions/middlewares/action-admin-middleware";
+import actionClient from "@/lib/actions/action-client";
 
 export const EstablishmentCreateAction = actionClient
   .schema(EstablishmentCreateSchema)

@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { messages } from "@/lib/messages";
 import { UserRoles } from "@prisma/client";
-import { CreateUserSchema } from "@/schemas/users/create-user";
 
 export const UserCreateSchema = z.object({
   name: z.string().min(1, messages.validation.required),
@@ -14,4 +13,4 @@ export const UserCreateSchema = z.object({
   }),
 });
 
-export const EditUserSchema = CreateUserSchema;
+export const UserEditSchema = UserCreateSchema;

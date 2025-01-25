@@ -1,18 +1,20 @@
 "use client";
-
-import PageLoading from "@/components/common/page-loading";
-import PagePagination from "@/components/common/page-pagination";
-import { Input } from "@/components/ui/input";
-import { usePagination } from "@/hooks/use-pagination";
-import { useSearch } from "@/hooks/use-search";
-import { messages } from "@/lib/messages";
 import { trpc } from "@/lib/trpc/provider";
-import EstablishmentCard from "./components/establishment-card";
+import { usePagination } from "@/hooks/use-pagination";
+import { Input } from "@/components/ui/input";
+import { useSearch } from "@/hooks/use-search";
+import PageLoading from "@/components/common/page-loading";
+import { messages } from "@/lib/messages";
+import PagePagination from "@/components/common/page-pagination";
+import NotFoundBanner from "@/components/common/not-found-banner";
+import UserCard from "./components/user-card";
 
-export default function EstablishmentsPageClient() {
+export default function UsersPageClient() {
   const { page, limit, setPage } = usePagination();
+
   const { searchTerm, handleSearch } = useSearch();
-  const { data, isLoading } = trpc.establishment.list.useQuery({
+
+  const { data, isLoading, isRefetching } = trpc.users.list.useQuery({
     page,
     limit,
     input: searchTerm,
@@ -33,13 +35,14 @@ export default function EstablishmentsPageClient() {
         <PageLoading />
       ) : (
         <div className="space-y-4">
-          {data?.data.map((establishment) => (
-            <EstablishmentCard
-              key={establishment.id}
-              establishment={establishment}
-            />
+          {data?.data.map((user) => (
+            <UserCard key={user.id} user={user} isFetching={isRefetching} />
           ))}
         </div>
+      )}
+
+      {!isLoading && data?.data.length === 0 && (
+        <NotFoundBanner title={messages.errors.users.notFoundPlural} />
       )}
       <PagePagination pagination={data?.pagination} setPage={setPage} />
     </div>
