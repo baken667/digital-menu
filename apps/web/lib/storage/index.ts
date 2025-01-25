@@ -2,12 +2,15 @@ import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
   ListObjectsV2Command,
   DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
 import { v4 as uuid } from "uuid";
 import { BUCKET } from "../consts";
 import { resizeImage, toWebp } from "./utils";
+import { TRPCError } from "@trpc/server";
+import { messages } from "../messages";
 
 if (
   !process.env.S3_ACCESS_KEY ||
@@ -31,112 +34,85 @@ export const storage = new S3Client({
 export async function upload(
   fileBuffer: Buffer,
   collection: string,
-  thumbs?: number[]
+  thumbs?: number[],
 ) {
   try {
     const fileName = uuid();
     const ext = "webp";
-    const key = `${collection}/${fileName}/${fileName}.${ext}`;
+    const prefix = `${collection}/${fileName}`;
+    const key = `${prefix}/${fileName}.${ext}`;
 
-    const img = await toWebp(fileBuffer);
+    const webpImage = await toWebp(fileBuffer);
 
-    const uploadPromises = [
-      storage.send(
-        new PutObjectCommand({
-          Body: img,
-          Bucket: BUCKET,
-          Key: key,
-          ContentType: "image/webp",
-        })
-      ),
-    ];
+    await storage.send(
+      new PutObjectCommand({
+        Body: webpImage,
+        Bucket: BUCKET,
+        Key: key,
+        ContentType: "image/webp",
+      }),
+    );
 
     if (thumbs && thumbs.length > 0) {
-      for (const height of thumbs) {
-        const resizedImg = await resizeImage(fileBuffer, height);
-        const thumbKey = `${collection}/${fileName}/${fileName}_${height}.${ext}`;
+      const thumbnailsPromises = thumbs.map(async (size) => {
+        const thumbKey = `${prefix}/${size}_${fileName}.${ext}`;
+        const thumbBuffer = await resizeImage(webpImage, size);
 
-        uploadPromises.push(
-          storage.send(
-            new PutObjectCommand({
-              Body: resizedImg,
-              Bucket: BUCKET,
-              Key: thumbKey,
-              ContentType: "image/webp",
-            })
-          )
+        await storage.send(
+          new PutObjectCommand({
+            Body: thumbBuffer,
+            Bucket: BUCKET,
+            Key: thumbKey,
+            ContentType: "image/webp",
+          }),
         );
-      }
+
+        return size;
+      });
+
+      await Promise.all(thumbnailsPromises);
     }
 
-    await Promise.all(uploadPromises);
-
     return {
-      success: true,
-      key: key,
+      path: key,
     };
   } catch (err) {
     throw err;
   }
 }
 
-export async function get(path: string) {
-  try {
-    const command = new GetObjectCommand({
-      Bucket: BUCKET,
-      Key: path,
-    });
-
-    return await storage.send(command);
-  } catch (err) {
-    return null;
-  }
-}
-
 export async function remove(path: string) {
   try {
-    const [collection, fileName] = path.split("/").slice(0, 2);
-    const baseName = fileName.split(".")[0];
-    const basePath = `${collection}/${fileName.split(".")[0]}/`;
+    const pathParts = path.split("/");
+    const fileDir = pathParts.slice(0, -1).join("/");
 
-    const listCommand = new ListObjectsV2Command({
-      Bucket: BUCKET,
-      Prefix: basePath,
-    });
+    const list = await storage.send(
+      new ListObjectsV2Command({
+        Bucket: BUCKET,
+        Prefix: fileDir,
+      }),
+    );
 
-    const listedObjects = await storage.send(listCommand);
-
-    console.log(`aboba aboba`, listedObjects);
-
-    const keysToDelete = listedObjects.Contents?.filter((item) =>
-      item.Key?.startsWith(`${basePath}${baseName}`)
-    ).map((item) => ({ Key: item.Key }));
-
-    if (!keysToDelete || keysToDelete.length === 0) {
-      return {
-        success: false,
-        message: "No matching files found for deletion",
-      };
+    if (list.Contents?.length === 0) {
+      throw new Error(messages.errors.common.notFound);
     }
 
-    const deleteCommand = new DeleteObjectsCommand({
-      Bucket: BUCKET,
-      Delete: {
-        Objects: keysToDelete,
-      },
-    });
-
-    await storage.send(deleteCommand);
+    await storage.send(
+      new DeleteObjectsCommand({
+        Bucket: BUCKET,
+        Delete: {
+          Objects: list.Contents?.filter((obj) => obj.Key).map((obj) => ({
+            Key: obj.Key,
+          })),
+          Quiet: true,
+        },
+      }),
+    );
 
     return {
       success: true,
-      deletedKeys: keysToDelete.map((k) => k.Key),
     };
   } catch (err) {
-    return {
-      success: false,
-      message: "Failed to delete files",
-      err,
-    };
+    throw err;
   }
 }

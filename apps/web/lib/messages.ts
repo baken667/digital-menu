@@ -8,6 +8,9 @@ export const messages = {
       alreadyExists: "Пользователь с такой почтой уже существует",
       notFoundPlural: "Пользователи не найдены",
     },
+    storage: {
+      invalidPath: "Неверный путь",
+    },
     common: {
       unexpectedError: "Произошла непредвиденная ошибка",
       forbidden: "Доступ запрещен",

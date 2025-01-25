@@ -15,7 +15,7 @@ export default function DashboardClient() {
   const { data, isLoading } = trpc.establishment.list.useQuery({
     page,
     limit,
-    input: searchTerm
+    input: searchTerm,
   });
 
   return (

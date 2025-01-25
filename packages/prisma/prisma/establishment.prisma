@@ -1,7 +1,8 @@
 model Establishment {
-  id   String  @id @default(cuid())
+  id   String @id @default(cuid())
   name String
-  slug String  @unique
+  slug String @unique
+
   logo String?
 
   // address

@@ -21,8 +21,8 @@ export async function handlerGetEstablishment({
   ) {
     throw new TRPCError({
       message: messages.errors.common.forbidden,
-      code: 'FORBIDDEN'
-    })
+      code: "FORBIDDEN",
+    });
   }
 
   return establishment;

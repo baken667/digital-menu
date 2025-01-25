@@ -1,46 +1,86 @@
-import { get } from "@/lib/storage";
+import sharp from "sharp";
 import { NextRequest, NextResponse } from "next/server";
+import { get, storage } from "@/lib/storage";
+import { messages } from "@/lib/messages";
+import { GetObjectCommand, S3ServiceException } from "@aws-sdk/client-s3";
+import { BUCKET } from "@/lib/consts";
+
+const DEFAULT_TTL = 60 * 60 * 24 * 7;
 
 export const GET = async (
   request: NextRequest,
-  props: { params: Promise<{ path: string[] }> }
+  props: { params: Promise<{ path: string[] }> },
 ) => {
   try {
+    const { path: pathParts } = await props.params;
     const searchParams = request.nextUrl.searchParams;
-    const { path } = await props.params;
-    const height = searchParams.get("height");
+    const heightParam = searchParams.get("height");
+    const fileName = pathParts.at(-1);
 
-    let pathStr = path.join("/");
-    if (height) {
-      const extIndex = pathStr.lastIndexOf(".");
-      if (extIndex === -1) {
-        return NextResponse.json(
-          { error: "Invalid file path, extension missing" },
-          { status: 400 }
-        );
-      }
-
-      pathStr =
-        pathStr.slice(0, extIndex) + `_${height}` + pathStr.slice(extIndex);
+    if (!fileName) {
+      return NextResponse.json(
+        {
+          message: messages.validation.invalidImageType,
+        },
+        {
+          status: 400,
+        },
+      );
     }
 
-    const file = await get(pathStr);
+    if (heightParam === null) {
+      const { Body: imageStream, ContentType } = await storage.send(
+        new GetObjectCommand({
+          Bucket: BUCKET,
+          Key: pathParts.join("/"),
+        }),
+      );
 
-    if (!file) {
-      return NextResponse.json({ error: "File not found" }, { status: 404 });
+      const stream = imageStream?.transformToWebStream();
+
+      return new NextResponse(stream, {
+        headers: {
+          ...(ContentType && {
+            "Content-Type": ContentType,
+          }),
+          "Cache-Control": `public, max-age=${DEFAULT_TTL}`,
+        },
+      });
     }
 
-    return new NextResponse(file.Body as ReadableStream, {
+    const fileDir = pathParts.slice(0, -1).join("/");
+
+    const { Body: imageStream, ContentType } = await storage.send(
+      new GetObjectCommand({
+        Bucket: BUCKET,
+        Key: `${fileDir}/${heightParam}_${fileName}`,
+      }),
+    );
+
+    const stream = imageStream?.transformToWebStream();
+
+    return new NextResponse(stream, {
       headers: {
-        "Content-Type": file.ContentType || "application/octet-stream",
-        "Cache-Control": "public, max-age=31536000, immutable",
+        ...(ContentType && {
+          "Content-Type": ContentType,
+        }),
+        "Cache-Control": `public, max-age=${DEFAULT_TTL}`,
       },
     });
   } catch (error) {
-    console.error(error);
+    if (error instanceof S3ServiceException) {
+      if (error.name === "NoSuchKey") {
+        return NextResponse.json(
+          {
+            messages: messages.errors.common.notFound,
+          },
+          { status: 404 },
+        );
+      }
+    }
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };

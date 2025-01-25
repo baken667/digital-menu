@@ -34,12 +34,12 @@ export const uploadEstablishmentLogoAction = actionClient
         if (file instanceof File) {
           const fileBuffer = Buffer.from(await file.arrayBuffer());
 
-          const data = await upload(fileBuffer, "establishment-logos", [120]);
+          const data = await upload(fileBuffer, "establishment-logos", [240]);
 
           await prisma.establishment.update({
             where: { id: estId },
             data: {
-              logo: data.key,
+              logo: data.path,
             },
           });
 
@@ -60,5 +60,5 @@ export const uploadEstablishmentLogoAction = actionClient
         }
         throw error;
       }
-    }
+    },
   );

@@ -15,12 +15,14 @@ import {
 import { Button } from "../ui/button";
 import { messages } from "@/lib/messages";
 import { Input } from "../ui/input";
+import { trpc } from "@/trpc/provider";
 
 type PropsType = {
   estId: string;
 };
 
 export default function UploadEstablishmentLogo({ estId }: PropsType) {
+  const { establishment } = trpc.useUtils();
   const uploadAction = uploadEstablishmentLogoAction.bind(null, estId);
 
   const { form, handleSubmitWithAction } = useHookFormAction(
@@ -30,10 +32,11 @@ export default function UploadEstablishmentLogo({ estId }: PropsType) {
       actionProps: {
         onSuccess: (data) => {
           console.log(data.data);
+          establishment.invalidate();
         },
         onError: (data) => {
           console.log(data);
-        }
+        },
       },
       formProps: {
         defaultValues: {
