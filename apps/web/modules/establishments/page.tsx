@@ -1,8 +1,8 @@
-import DashboardClient from "@/app/(protected)/dashboard/establishments/pageClient";
 import ProtectedComponent from "@/components/common/protectedComponent";
-import CreateEstablishmentDialog from "@/components/establishments/create-establishment-modal";
 import PageHeader from "@/components/layouts/dashboard/page-header";
 import { messages } from "@/lib/messages";
+import EstablishmentsPageClient from "./page-client";
+import CreateEstablishmentDialog from "./components/create-establishment-dialog";
 
 export default function EstablishmentsPage() {
   return (
@@ -16,7 +16,7 @@ export default function EstablishmentsPage() {
           </ProtectedComponent>
         }
       />
-      <DashboardClient />
+      <EstablishmentsPageClient />
     </>
   );
 }

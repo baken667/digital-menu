@@ -6,7 +6,10 @@ import { toast } from "sonner";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { messages } from "@/lib/messages";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { trpc } from "@/trpc/provider";
+import { EstablishmentCreateSchema } from "@/modules/establishments/lib/schema";
+import { EstablishmentCreateAction } from "@/modules/establishments/actions/establishment-create-action";
 import {
   Dialog,
   DialogContent,
@@ -15,14 +18,16 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
-import { createEstablishmentAction } from "@/actions/establishments/create-establishment";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { CreateEstablishmentSchema } from "@/schemas/establishments/create-establishment";
-import { Form, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
-import { trpc } from "@/trpc/provider";
-import { EstablishmentCreateSchema } from "@/modules/establishments/lib/schema";
-import { EstablishmentCreateAction } from "@/modules/establishments/actions/establishment-create-action";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export default function CreateEstablishmentDialog() {
   const establishment = trpc.useUtils().establishment;

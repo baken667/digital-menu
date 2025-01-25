@@ -10,10 +10,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../ui/form";
-import { Button } from "../ui/button";
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
 import { messages } from "@/lib/messages";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { trpc } from "@/trpc/provider";
 import { EstablishmentUploadLogoAction } from "@/modules/establishments/actions/establishment-upload-logo-action";
 import { EstablishmentUploadLogoSchema } from "@/modules/establishments/lib/schema";

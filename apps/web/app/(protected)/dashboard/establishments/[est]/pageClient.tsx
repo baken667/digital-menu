@@ -1,7 +1,7 @@
 "use client";
-import UploadEstablishmentLogo from "@/components/establishments/upload-establishment-logo";
 import PageHeader from "@/components/layouts/dashboard/page-header";
 import { Button } from "@/components/ui/button";
+import UploadEstablishmentLogo from "@/modules/establishments/components/upload-establishment-logo";
 import { trpc } from "@/trpc/provider";
 import Image from "next/image";
 import { toast } from "sonner";

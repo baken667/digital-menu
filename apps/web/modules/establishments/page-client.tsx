@@ -2,14 +2,14 @@
 
 import PageLoading from "@/components/common/page-loading";
 import PagePagination from "@/components/common/page-pagination";
-import EstablishmentCard from "@/components/establishments/establishment-card";
 import { Input } from "@/components/ui/input";
 import { usePagination } from "@/hooks/use-pagination";
 import { useSearch } from "@/hooks/use-search";
 import { messages } from "@/lib/messages";
 import { trpc } from "@/trpc/provider";
+import EstablishmentCard from "./components/establishment-card";
 
-export default function DashboardClient() {
+export default function EstablishmentsPageClient() {
   const { page, limit, setPage } = usePagination();
   const { searchTerm, handleSearch } = useSearch();
   const { data, isLoading } = trpc.establishment.list.useQuery({

@@ -1,9 +1,9 @@
 import { Establishment } from "@dmu/prisma/client";
-import { Card, CardContent } from "../ui/card";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { PenIcon } from "lucide-react";
 import DeleteEstablishment from "./delete-establishment";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type EstablishmentCardProps = {
   establishment: Omit<Establishment, "address">;
