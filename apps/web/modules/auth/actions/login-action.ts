@@ -1,15 +1,18 @@
 "use server";
 
 import { AuthError } from "next-auth";
-import { actionClient } from "@/actions/action-client";
+import { comparePassword } from "@dmu/features/auth";
+
 import { messages } from "@/lib/messages";
 import { LoginSchema } from "@/schemas/users/auth";
 import { db } from "@/lib/prisma/db";
-import { comparePassword } from "@dmu/features/auth";
 import { signIn } from "@/auth";
+import ActionGuestMiddleware from "@/lib/actions/middlewares/action-guest-middleware";
+import actionClient from "@/lib/actions/action-client";
 
 export const authLoginAction = actionClient
   .schema(LoginSchema)
+  .use(ActionGuestMiddleware)
   .action(async ({ parsedInput: { email, password } }) => {
     try {
       const user = await db.user.findUnique({

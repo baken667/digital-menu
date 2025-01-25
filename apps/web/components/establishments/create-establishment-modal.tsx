@@ -21,14 +21,16 @@ import { CreateEstablishmentSchema } from "@/schemas/establishments/create-estab
 import { Form, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { trpc } from "@/trpc/provider";
+import { EstablishmentCreateSchema } from "@/modules/establishments/lib/schema";
+import { EstablishmentCreateAction } from "@/modules/establishments/actions/establishment-create-action";
 
 export default function CreateEstablishmentDialog() {
-  const establishment = trpc.useUtils().establishment
+  const establishment = trpc.useUtils().establishment;
   const [open, setOpen] = useState(false);
 
   const { form, handleSubmitWithAction } = useHookFormAction(
-    createEstablishmentAction,
-    zodResolver(CreateEstablishmentSchema),
+    EstablishmentCreateAction,
+    zodResolver(EstablishmentCreateSchema),
     {
       formProps: {
         defaultValues: {
@@ -47,7 +49,7 @@ export default function CreateEstablishmentDialog() {
             toast.error(data?.message);
           }
         },
-      }
+      },
     },
   );
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { authLoginAction } from "@/modules/auth/actions/login";
+import { authLoginAction } from "@/modules/auth/actions/login-action";
 import { AuthLoginSchema } from "@/modules/auth/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";

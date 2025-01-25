@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { messages } from "@/lib/messages";
 import { createMiddleware } from "next-safe-action";
 
-export const authMiddleware = createMiddleware().define(
+const ActionAuthMiddleware = createMiddleware().define(
   async ({ next, ctx }) => {
     const session = await auth();
 
@@ -18,3 +18,5 @@ export const authMiddleware = createMiddleware().define(
     });
   },
 );
+
+export default ActionAuthMiddleware;

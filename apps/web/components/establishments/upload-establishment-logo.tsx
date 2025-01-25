@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useHookFormAction } from "@next-safe-action/adapter-react-hook-form/hooks";
-import { uploadEstablishmentLogoAction } from "@/actions/establishments/upload-establishment-logo";
 import { UploadEstablishmentLogoSchema } from "@/schemas/establishments/upload-logo";
 import {
   Form,
@@ -16,6 +15,8 @@ import { Button } from "../ui/button";
 import { messages } from "@/lib/messages";
 import { Input } from "../ui/input";
 import { trpc } from "@/trpc/provider";
+import { EstablishmentUploadLogoAction } from "@/modules/establishments/actions/establishment-upload-logo-action";
+import { EstablishmentUploadLogoSchema } from "@/modules/establishments/lib/schema";
 
 type PropsType = {
   estId: string;
@@ -23,11 +24,11 @@ type PropsType = {
 
 export default function UploadEstablishmentLogo({ estId }: PropsType) {
   const { establishment } = trpc.useUtils();
-  const uploadAction = uploadEstablishmentLogoAction.bind(null, estId);
+  const uploadAction = EstablishmentUploadLogoAction.bind(null, estId);
 
   const { form, handleSubmitWithAction } = useHookFormAction(
     uploadAction,
-    zodResolver(UploadEstablishmentLogoSchema),
+    zodResolver(EstablishmentUploadLogoSchema),
     {
       actionProps: {
         onSuccess: (data) => {
