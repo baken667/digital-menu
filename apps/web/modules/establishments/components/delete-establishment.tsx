@@ -20,12 +20,12 @@ interface Props {
 }
 
 export default function DeleteEstablishment({ id, disabled }: Props) {
-  const { establishment } = trpc.useUtils();
+  const { establishments } = trpc.useUtils();
 
-  const { isLoading, mutate } = trpc.establishment.delete.useMutation({
+  const { isLoading, mutate } = trpc.establishments.delete.useMutation({
     onSuccess: () => {
       toast.success(messages.establishments.deleted);
-      establishment.invalidate();
+      establishments.invalidate();
     },
     onError: (error) => {
       toast.error(error.message);

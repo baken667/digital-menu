@@ -23,7 +23,7 @@ type PropsType = {
 };
 
 export default function UploadEstablishmentLogo({ estId }: PropsType) {
-  const { establishment } = trpc.useUtils();
+  const { establishments } = trpc.useUtils();
   const uploadAction = EstablishmentUploadLogoAction.bind(null, estId);
 
   const { form, handleSubmitWithAction } = useHookFormAction(
@@ -33,7 +33,7 @@ export default function UploadEstablishmentLogo({ estId }: PropsType) {
       actionProps: {
         onSuccess: (data) => {
           console.log(data.data);
-          establishment.invalidate();
+          establishments.invalidate();
         },
         onError: (data) => {
           console.log(data);

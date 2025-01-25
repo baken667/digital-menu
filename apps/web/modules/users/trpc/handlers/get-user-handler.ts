@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
-import { TRPCHandler } from "@/types/trpc-handler";
 import { db } from "@/lib/prisma/db";
 import { messages } from "@/lib/messages";
+import { TRPCHandler } from "@/app/types/trpc-handler";
 
 export async function GetUserHandler({
   input,

@@ -1,11 +1,11 @@
+import getTrpc from ".";
 import { UsersTRPCRouter } from "@/modules/users/trpc/users-router";
-import getTrpc from "..";
-import { establishmentsRouter } from "./establishments";
+import { EstablishmentsTRPCRouter } from "@/modules/establishments/trpc/establishment-router";
 
 const t = getTrpc();
 
 export const trpcRouter = t.router({
-  establishment: establishmentsRouter,
+  establishments: EstablishmentsTRPCRouter,
   users: UsersTRPCRouter,
 });
 

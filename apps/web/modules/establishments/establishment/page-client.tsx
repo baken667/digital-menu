@@ -7,13 +7,13 @@ import { toast } from "sonner";
 import { trpc } from "@/lib/trpc/provider";
 
 export default function EstablishmentPageClient({ estId }: { estId: string }) {
-  const { establishment } = trpc.useUtils();
-  const { data, isLoading } = trpc.establishment.get.useQuery(estId);
+  const { establishments } = trpc.useUtils();
+  const { data, isLoading } = trpc.establishments.get.useQuery(estId);
 
   const { mutate, isLoading: isExecuting } =
-    trpc.establishment.deleteLogo.useMutation({
+    trpc.establishments.deleteLogo.useMutation({
       onSuccess: () => {
-        establishment.invalidate();
+        establishments.invalidate();
       },
       onError: (error) => {
         toast.error(error.message);

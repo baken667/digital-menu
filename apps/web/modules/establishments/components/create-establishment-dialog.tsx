@@ -20,7 +20,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { CreateEstablishmentSchema } from "@/schemas/establishments/create-establishment";
 import {
   Form,
   FormField,
@@ -30,7 +29,7 @@ import {
 } from "@/components/ui/form";
 
 export default function CreateEstablishmentDialog() {
-  const establishment = trpc.useUtils().establishment;
+  const { establishments } = trpc.useUtils();
   const [open, setOpen] = useState(false);
 
   const { form, handleSubmitWithAction } = useHookFormAction(
@@ -47,7 +46,7 @@ export default function CreateEstablishmentDialog() {
         onSuccess: async ({ data }) => {
           if (data?.success) {
             toast.success(data.message);
-            establishment.list.invalidate();
+            establishments.list.invalidate();
             setOpen(false);
             form.reset();
           } else {

@@ -1,8 +1,8 @@
+import { TRPCHandler } from "@/app/types/trpc-handler";
 import { db } from "@/lib/prisma/db";
-import { PaginatedParams } from "@/schemas/pagination-schema";
-import { TRPCHandler } from "@/types/trpc-handler";
+import { PaginatedParams } from "@/lib/schemas/pagination-schema";
 
-export async function handlerGetEstablishments({
+export async function ListEstablishmentHandler({
   input: { input, limit, page },
   ctx,
 }: TRPCHandler<{

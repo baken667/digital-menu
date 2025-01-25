@@ -1,14 +1,14 @@
 import { TRPCError } from "@trpc/server";
-import { TRPCHandler } from "@/types/trpc-handler";
+import { TRPCHandler } from "@/app/types/trpc-handler";
 import { messages } from "@/lib/messages";
-import { prisma } from "@dmu/prisma";
-import { remove } from "@/lib/storage";
+import { db } from "@/lib/prisma/db";
+import { removeImage } from "@/lib/storage";
 
-export async function handlerDeleteEstablishmentLogo({
+export async function DeleteEstablishmentLogoHandler({
   input,
   ctx,
 }: TRPCHandler<{ input: string }>) {
-  const establishment = await prisma.establishment.findUnique({
+  const establishment = await db.establishment.findUnique({
     where: { id: input },
     select: {
       id: true,
@@ -17,16 +17,9 @@ export async function handlerDeleteEstablishmentLogo({
     },
   });
 
-  if (!establishment) {
-    throw new TRPCError({
-      message: messages.errors.common.notFound,
-      code: "NOT_FOUND",
-    });
-  }
-
   if (
     ctx.session?.user.role !== "admin" &&
-    ctx.session?.user.id !== establishment.ownerId
+    ctx.session?.user.id !== establishment?.ownerId
   ) {
     throw new TRPCError({
       message: messages.errors.common.forbidden,
@@ -34,7 +27,7 @@ export async function handlerDeleteEstablishmentLogo({
     });
   }
 
-  if (!establishment.logo) {
+  if (!establishment?.logo) {
     return {
       success: true,
       messages: messages.establishments.logoDeleted,
@@ -42,9 +35,9 @@ export async function handlerDeleteEstablishmentLogo({
   }
 
   try {
-    await remove(establishment.logo);
+    await removeImage(establishment.logo);
 
-    await prisma.establishment.update({
+    await db.establishment.update({
       where: { id: input },
       data: {
         logo: null,

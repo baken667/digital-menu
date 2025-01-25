@@ -1,5 +1,5 @@
+import { TRPCHandler } from "@/app/types/trpc-handler";
 import { messages } from "@/lib/messages";
-import { TRPCHandler } from "@/types/trpc-handler";
 import { prisma } from "@dmu/prisma";
 import { TRPCError } from "@trpc/server";
 

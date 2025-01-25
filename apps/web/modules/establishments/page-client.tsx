@@ -12,7 +12,7 @@ import EstablishmentCard from "./components/establishment-card";
 export default function EstablishmentsPageClient() {
   const { page, limit, setPage } = usePagination();
   const { searchTerm, handleSearch } = useSearch();
-  const { data, isLoading } = trpc.establishment.list.useQuery({
+  const { data, isLoading } = trpc.establishments.list.useQuery({
     page,
     limit,
     input: searchTerm,

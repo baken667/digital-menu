@@ -28,7 +28,7 @@ export const storage = new S3Client({
   disableHostPrefix: true,
 });
 
-export async function upload(
+export async function uploadImage(
   fileBuffer: Buffer,
   collection: string,
   thumbs?: number[],
@@ -78,7 +78,7 @@ export async function upload(
   }
 }
 
-export async function remove(path: string) {
+export async function removeImage(path: string) {
   try {
     const pathParts = path.split("/");
     const fileDir = pathParts.slice(0, -1).join("/");

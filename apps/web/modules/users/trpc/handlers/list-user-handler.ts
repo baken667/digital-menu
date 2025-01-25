@@ -1,8 +1,8 @@
-import { TRPCHandler } from "@/types/trpc-handler";
 import { TRPCError } from "@trpc/server";
 import { UserRoles } from "@dmu/prisma/client";
 import { db } from "@/lib/prisma/db";
 import { PaginatedParams } from "@/lib/schemas/pagination-schema";
+import { TRPCHandler } from "@/app/types/trpc-handler";
 
 export async function ListUserHandler({
   input: { input, role, limit, page },

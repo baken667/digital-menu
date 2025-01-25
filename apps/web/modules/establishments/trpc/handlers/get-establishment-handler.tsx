@@ -1,18 +1,23 @@
+import { TRPCHandler } from "@/app/types/trpc-handler";
 import { messages } from "@/lib/messages";
-import { TRPCHandler } from "@/types/trpc-handler";
-import { prisma } from "@dmu/prisma";
+import { db } from "@/lib/prisma/db";
 import { TRPCError } from "@trpc/server";
 
-export async function handlerGetEstablishment({
+export async function GetEstablishmentHandler({
   input,
   ctx,
-}: TRPCHandler<{ input: string }>) {
-  const establishment = await prisma.establishment.findUnique({
+}: TRPCHandler<{
+  input: string;
+}>) {
+  const establishment = await db.establishment.findUnique({
     where: { id: input },
   });
 
   if (!establishment) {
-    return null;
+    throw new TRPCError({
+      message: messages.errors.common.notFound,
+      code: "NOT_FOUND",
+    });
   }
 
   if (

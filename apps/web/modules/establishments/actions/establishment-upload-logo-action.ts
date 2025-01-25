@@ -6,7 +6,7 @@ import { Prisma } from "@dmu/prisma/client";
 import { EstablishmentUploadLogoSchema } from "../lib/schema";
 import { messages } from "@/lib/messages";
 import { db } from "@/lib/prisma/db";
-import { remove, upload } from "@/lib/storage";
+import { removeImage, uploadImage } from "@/lib/storage";
 import ActionAuthMiddleware from "@/lib/actions/middlewares/action-auth-middleware";
 
 export const EstablishmentUploadLogoAction = actionClient
@@ -39,10 +39,12 @@ export const EstablishmentUploadLogoAction = actionClient
           const fileBuffer = Buffer.from(await file.arrayBuffer());
 
           if (existEstablishment.logo !== null) {
-            await remove(existEstablishment.logo);
+            await removeImage(existEstablishment.logo);
           }
 
-          const data = await upload(fileBuffer, "establishment-logos", [240]);
+          const data = await uploadImage(fileBuffer, "establishment-logos", [
+            240,
+          ]);
 
           await db.establishment.update({
             where: { id: existEstablishment.id },

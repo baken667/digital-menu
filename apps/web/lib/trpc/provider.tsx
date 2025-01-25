@@ -3,8 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createTRPCReact } from "@trpc/react-query";
 import { httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
-
-import type { AppRouter } from "./routers";
+import { AppRouter } from "./router";
 
 export const trpc = createTRPCReact<AppRouter>();
 
@@ -30,7 +29,7 @@ export default function TrpcProvider({
             refetchOnWindowFocus: false,
           },
         },
-      })
+      }),
   );
 
   return (
